@@ -1,0 +1,39 @@
+import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import { UserService } from './user.service';
+import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { GetUsersDto } from './dto/get-users.dto';
+import { SearchUsersDto } from './dto/search-users.dto';
+
+
+@ApiTags('Users')
+@Controller('users')
+export class UserController {
+  constructor(private readonly userService: UserService) {}
+
+  @Get()
+  @ApiOperation({
+    summary: 'Obtener lista de usuarios de Github con paginación'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuarios obtenida correctamente',
+    type: GetUsersDto
+  })
+  async getUsers(@Query() dto: GetUsersDto) {
+    return this.userService.getUsers(dto);
+  }
+
+  @Get('/search-users')
+  @ApiOperation({
+    summary: 'Buscar usuarios en Github por un término con paginación'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Lista de usuarios que coinciden con el término de búsqueda obtenida correctamente',
+    type: SearchUsersDto
+  })
+  async searchUsers(@Query() dto: SearchUsersDto) {
+    return this.userService.searchUsers(dto);
+  }
+
+}
