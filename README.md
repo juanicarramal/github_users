@@ -34,6 +34,14 @@ cd github-users
 $ yarn install
 ```
 
+## Variables de entorno
+
+Crear un archivo .env en la raiz del proyecto con el siguiente contenido:
+
+PORT=3000
+BASE_URL=https://api.github.com
+
+
 ## Correr el proyecto
 
 ```bash
