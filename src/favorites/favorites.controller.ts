@@ -22,6 +22,11 @@ export class FavoritesController {
   @ApiResponse({
     status: 201,
     description: 'Usuario agregado a favoritos correctamente',
+    schema: {
+      example: {
+        message: 'Usuario juanicarramal agregado a favoritos',
+      },
+    },
   })
   @ApiParam({
     name: 'username',
@@ -40,6 +45,13 @@ export class FavoritesController {
   @ApiResponse({
     status: 200,
     description: 'Lista de usuarios favoritos',
+    schema: {
+      example: {
+        data: [
+            'juanicarramal'
+        ],
+      },
+    },
   })
   findAllFavorites() {
     return { data: this.favoritesService.findAllFavorites() };

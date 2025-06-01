@@ -25,7 +25,21 @@ export class UserController {
   @ApiResponse({
     status: 200,
     description: 'Lista de usuarios obtenida correctamente',
-    type: GetUsersDto,
+    schema: {
+      example: {
+        data: [
+              {
+                login: "juanicarramal",
+                avatar_url: "https://avatars.githubusercontent.com/u/31519467?v=4",
+                url: "https://api.github.com/users/juanicarramal"
+              }
+            ],
+        pagination: {
+          next: 'https://api.github.com/users?since=31519467&per_page=10',
+          previous: null,
+        }
+      }
+    }
   })
   async getUsers(@Query() dto: GetUsersDto) {
     return this.userService.getUsers(dto);
@@ -39,7 +53,21 @@ export class UserController {
     status: 200,
     description:
       'Lista de usuarios que coinciden con el término de búsqueda obtenida correctamente',
-    type: SearchUsersDto,
+    schema: {
+      example: {
+        data: [
+          {
+            login: "juanicarramal",
+            avatar_url: "https://avatars.githubusercontent.com/u/31519467?v=4",
+            url: "https://api.github.com/users/juanicarramal"
+          }
+        ],
+        pagination: {
+          next: 'https://api.github.com/users?since=31519467&per_page=10',
+          previous: null,
+        }
+      }
+    }
   })
   async searchUsers(@Query() dto: SearchUsersDto) {
     return this.userService.searchUsers(dto);
@@ -49,18 +77,32 @@ export class UserController {
   @ApiOperation({
     summary: 'Obtener detalles de un usuario de Github por su nombre',
   })
-  @ApiResponse({
-    status: 200,
-    description: 'Detalles del usuario obtenidos correctamente',
-  })
-  @ApiResponse({
-    status: 404,
-    description: 'Usuario no encontrado',
-  })
   @ApiParam({
     name: 'username',
     description: 'Nombre de usuario de Github',
     type: String,
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Detalles del usuario con is_favorite en true si está en favoritos',
+    schema: {
+      example: {
+        login: "juanicarramal",
+        avatar_url: "https://avatars.githubusercontent.com/u/31519467?v=4",
+        name: "Juan Carramal",
+        bio: "Desarrollador Full Stack",
+        repos_url: "https://api.github.com/users/juanicarramal/repos",
+        public_repos: 10,
+        followers: 100,
+        following: 50,
+        created_at: "2017-01-01T00:00:00Z",
+        is_favorite: true
+      }
+    }
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuario no encontrado',
   })
   async getUserDetails(@Param('username') username: string) {
     return this.userService.getUserDetails(username);
