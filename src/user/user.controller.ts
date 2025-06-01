@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
 import { UserService } from './user.service';
-import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
+import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUsersDto } from './dto/get-users.dto';
 import { SearchUsersDto } from './dto/search-users.dto';
 
@@ -34,6 +34,27 @@ export class UserController {
   })
   async searchUsers(@Query() dto: SearchUsersDto) {
     return this.userService.searchUsers(dto);
+  }
+
+  @Get(':username')
+  @ApiOperation({
+    summary: 'Obtener detalles de un usuario de Github por su nombre'
+  })
+  @ApiResponse({
+    status: 200,
+    description: 'Detalles del usuario obtenidos correctamente',
+  })
+  @ApiResponse({
+    status: 404,
+    description: 'Usuario no encontrado',
+  })
+  @ApiParam({
+    name: 'username',
+    description: 'Nombre de usuario de Github',
+    type: String,
+  })
+  async getUserDetails(@Param('username') username: string) {
+    return this.userService.getUserDetails(username);
   }
 
 }
