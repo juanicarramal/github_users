@@ -21,10 +21,12 @@ async function bootstrap() {
 
   // Swagger
   const config = new DocumentBuilder()
-     .setTitle('API Fravega Github Users')
-     .setDescription('API REST para consultar usuarios de Github y gestionar favoritos')
-     .setVersion('1.0')
-     .build();
+    .setTitle('API Fravega Github Users')
+    .setDescription(
+      'API REST para consultar usuarios de Github y gestionar favoritos',
+    )
+    .setVersion('1.0')
+    .build();
 
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);

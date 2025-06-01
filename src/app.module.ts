@@ -10,7 +10,7 @@ import { FavoritesModule } from './favorites/favorites.module';
       envFilePath: '.env',
     }),
     UserModule,
-    FavoritesModule
+    FavoritesModule,
   ],
 })
 export class AppModule {}

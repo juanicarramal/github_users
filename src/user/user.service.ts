@@ -1,32 +1,29 @@
 import { Injectable, InternalServerErrorException } from '@nestjs/common';
 import axios from 'axios';
-import { parseLinkHeader } from 'src/shared/utils/parse-link-header';
 import { SearchUsersDto } from './dto/search-users.dto';
 import { GetUsersDto } from './dto/get-users.dto';
 import { FavoritesService } from 'src/favorites/favorites.service';
+import { parseLinkHeader } from 'src/shared/utils/parse-link-header';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly favoritesService: FavoritesService,
-  ) {}
+  constructor(private readonly favoritesService: FavoritesService) {}
 
   async getUsers(dto: GetUsersDto) {
     try {
-      const response = await axios(`${process.env.BASE_URL}/users`, {
-        method: 'GET',
+      const response = await axios.get(`${process.env.BASE_URL}/users`, {
         params: {
           per_page: dto.per_page,
-          page: dto.page
+          page: dto.page,
         },
         headers: {
           'User-Agent': 'NestJS User Service',
-        }
+        },
       });
 
       const pagination = parseLinkHeader(response.headers['link']);
 
-      const users = response.data.map(user => ({
+      const users = response.data.map((user) => ({
         login: user.login,
         avatar_url: user.avatar_url,
         url: user.url,
@@ -34,31 +31,32 @@ export class UserService {
 
       return {
         data: users,
-        pagination
+        pagination,
       };
     } catch (error) {
       console.error(`Error de Github API: ${error.message}`);
-      throw new InternalServerErrorException('Error al obtener usuarios de Github');
+      throw new InternalServerErrorException(
+        'Error al obtener usuarios de Github',
+      );
     }
   }
 
   async searchUsers(dto: SearchUsersDto) {
     try {
-      const response = await axios(`${process.env.BASE_URL}/search/users`, {
-        method: 'GET',
+      const response = await axios.get(`${process.env.BASE_URL}/search/users`, {
         params: {
           q: dto.term,
           per_page: dto.per_page,
-          page: dto.page
+          page: dto.page,
         },
         headers: {
           'User-Agent': 'NestJS User Service',
-        }
+        },
       });
 
       const pagination = parseLinkHeader(response.headers['link']);
 
-      const users = response.data.items.map(user => ({
+      const users = response.data.items.map((user) => ({
         login: user.login,
         avatar_url: user.avatar_url,
         url: user.url,
@@ -66,22 +64,26 @@ export class UserService {
 
       return {
         data: users,
-        pagination
+        pagination,
       };
     } catch (error) {
       console.error(`Error de Github API: ${error.message}`);
-      throw new InternalServerErrorException('Error al buscar usuarios en Github');
+      throw new InternalServerErrorException(
+        'Error al buscar usuarios en Github',
+      );
     }
   }
 
   async getUserDetails(username: string) {
     try {
-      const response = await axios(`${process.env.BASE_URL}/users/${username}`, {
-        method: 'GET',
-        headers: {
-          'User-Agent': 'NestJS User Service',
-        }
-      });
+      const response = await axios.get(
+        `${process.env.BASE_URL}/users/${username}`,
+        {
+          headers: {
+            'User-Agent': 'NestJS User Service',
+          },
+        },
+      );
 
       return {
         avatar_url: response.data.avatar_url,
@@ -96,8 +98,12 @@ export class UserService {
         is_favorite: this.favoritesService.isFavorite(username), // Asumiendo que tienes un servicio de favoritos inyectado
       };
     } catch (error) {
-      console.error(`Error de Github API al obtener detalles del usuario ${username}: ${error.message}`);
-      throw new InternalServerErrorException(`Error al obtener detalles del usuario ${username}`);
+      console.error(
+        `Error de Github API al obtener detalles del usuario ${username}: ${error.message}`,
+      );
+      throw new InternalServerErrorException(
+        `Error al obtener detalles del usuario ${username}`,
+      );
     }
   }
 }

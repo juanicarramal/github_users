@@ -1,9 +1,17 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  Query,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { GetUsersDto } from './dto/get-users.dto';
 import { SearchUsersDto } from './dto/search-users.dto';
-
 
 @ApiTags('Users')
 @Controller('users')
@@ -12,12 +20,12 @@ export class UserController {
 
   @Get()
   @ApiOperation({
-    summary: 'Obtener lista de usuarios de Github con paginación'
+    summary: 'Obtener lista de usuarios de Github con paginación',
   })
   @ApiResponse({
     status: 200,
     description: 'Lista de usuarios obtenida correctamente',
-    type: GetUsersDto
+    type: GetUsersDto,
   })
   async getUsers(@Query() dto: GetUsersDto) {
     return this.userService.getUsers(dto);
@@ -25,12 +33,13 @@ export class UserController {
 
   @Get('/search-users')
   @ApiOperation({
-    summary: 'Buscar usuarios en Github por un término con paginación'
+    summary: 'Buscar usuarios en Github por un término con paginación',
   })
   @ApiResponse({
     status: 200,
-    description: 'Lista de usuarios que coinciden con el término de búsqueda obtenida correctamente',
-    type: SearchUsersDto
+    description:
+      'Lista de usuarios que coinciden con el término de búsqueda obtenida correctamente',
+    type: SearchUsersDto,
   })
   async searchUsers(@Query() dto: SearchUsersDto) {
     return this.userService.searchUsers(dto);
@@ -38,7 +47,7 @@ export class UserController {
 
   @Get(':username')
   @ApiOperation({
-    summary: 'Obtener detalles de un usuario de Github por su nombre'
+    summary: 'Obtener detalles de un usuario de Github por su nombre',
   })
   @ApiResponse({
     status: 200,
@@ -56,5 +65,4 @@ export class UserController {
   async getUserDetails(@Param('username') username: string) {
     return this.userService.getUserDetails(username);
   }
-
 }

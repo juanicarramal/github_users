@@ -1,4 +1,12 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { FavoritesService } from './favorites.service';
 import { ApiOperation, ApiParam, ApiResponse, ApiTags } from '@nestjs/swagger';
 
@@ -34,7 +42,6 @@ export class FavoritesController {
     description: 'Lista de usuarios favoritos',
   })
   findAllFavorites() {
-    return this.favoritesService.findAllFavorites();
+    return { data: this.favoritesService.findAllFavorites() };
   }
-
 }

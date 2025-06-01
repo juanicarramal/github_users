@@ -4,7 +4,7 @@ import { Injectable } from '@nestjs/common';
 export class FavoritesService {
   private readonly favorites = new Set<string>();
 
-  addFavorite( username: string ): void {
+  addFavorite(username: string): void {
     this.favorites.add(username.toLowerCase());
   }
 
@@ -12,7 +12,7 @@ export class FavoritesService {
     return Array.from(this.favorites);
   }
 
-  isFavorite( username: string ): boolean {
+  isFavorite(username: string): boolean {
     return this.favorites.has(username.toLowerCase());
   }
 }
